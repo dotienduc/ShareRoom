@@ -1,0 +1,1 @@
+@include('front_end.home')
