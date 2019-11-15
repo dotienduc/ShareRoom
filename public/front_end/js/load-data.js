@@ -10,7 +10,8 @@ $(document).ready(function() {
                 search: search,
                 page: page,
                 sort: sort,
-                check: $("#checkIdUser").val()
+                check: $("#checkIdUser").val(),
+                namePage: $('#name-page').val()
             },
             success: function(data) {
                 $("#product-data").html(data);

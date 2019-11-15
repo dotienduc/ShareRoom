@@ -14,12 +14,14 @@ class ProductResponse implements Responsable
     private $roomPerPage = 9;
     private $sort;
     private $check;
+    private $namePage;
 
-    public function __construct($search, $page, $sort, $check){
+    public function __construct($search, $page, $sort, $check, $namePage){
         $this->search = $search;
         $this->page = $page;
         $this->sort = $sort;
         $this->check = $check;
+        $this->namePage = $namePage;
     }
 
     public function toResponse($request)
@@ -28,24 +30,47 @@ class ProductResponse implements Responsable
         $roomsFavorite = [];
         if(Auth::check()){
             $idUser = Auth::user()->id;
-            if($this->search != null) {
-                $type = $this->search['type'];
-                $id = $this->search['id'];
-                if($type == "city") {
-                    $rooms = User::find($idUser)->rooms()->where('city_id', $id)->offset($this->fromLoad($this->page))->
-                    limit($this->roomPerPage)->orderBy('price_per_month', $this->sort)->get();
-                }elseif($type == "district"){
-                    $rooms = User::find($idUser)->rooms()->where('district_id', $id)->offset($this->fromLoad($this->page))
-                    ->limit($this->roomPerPage)->orderBy('price_per_month', $this->sort)->get();
+            if($this->namePage == 'home')
+            {
+                if($this->search != null) {
+                    $type = $this->search['type'];
+                    $id = $this->search['id'];
+                    if($type == "city") {
+                        $rooms = Room::where('city_id', $id)->offset($this->fromLoad($this->page))->
+                        limit($this->roomPerPage)->orderBy('price_per_month', $this->sort)->get();
+                    }elseif($type == "district"){
+                        $rooms = Room::where('district_id', $id)->offset($this->fromLoad($this->page))
+                        ->limit($this->roomPerPage)->orderBy('price_per_month', $this->sort)->get();
+                    }else{
+                        $rooms = Room::where('street_id', $id)->offset($this->fromLoad($this->page))
+                        ->limit($this->roomPerPage)->orderBy('price_per_month', $this->sort)->get();
+                    }
                 }else{
-                    $rooms = User::find($idUser)->rooms()->where('street_id', $id)->offset($this->fromLoad($this->page))
-                    ->limit($this->roomPerPage)->orderBy('price_per_month', $this->sort)->get();
+                    $rooms = Room::offset($this->fromLoad($this->page))
+                            ->limit($this->roomPerPage)->orderBy('price_per_month', $this->sort)->get();
                 }
             }else{
-                $rooms = User::find($idUser)->rooms()->offset($this->fromLoad($this->page))
+                if($this->search != null) {
+                    $type = $this->search['type'];
+                    $id = $this->search['id'];
+                    if($type == "city") {
+                        $rooms = User::find($idUser)->rooms()->where('city_id', $id)->offset($this->fromLoad($this->page))->
+                        limit($this->roomPerPage)->orderBy('price_per_month', $this->sort)->get();
+                    }elseif($type == "district"){
+                        $rooms = User::find($idUser)->rooms()->where('district_id', $id)->offset($this->fromLoad($this->page))
                         ->limit($this->roomPerPage)->orderBy('price_per_month', $this->sort)->get();
+                    }else{
+                        $rooms = User::find($idUser)->rooms()->where('street_id', $id)->offset($this->fromLoad($this->page))
+                        ->limit($this->roomPerPage)->orderBy('price_per_month', $this->sort)->get();
+                    }
+                }else{
+                    $rooms = User::find($idUser)->rooms()->offset($this->fromLoad($this->page))
+                            ->limit($this->roomPerPage)->orderBy('price_per_month', $this->sort)->get();
+                }
             }
+            
             $roomsFavorite = Favorite::where('user_id', Auth::user()->id)->get();
+            // dd($roomsFavorite);
         }else{
             if($this->search != null) {
                 $type = $this->search['type'];
@@ -68,7 +93,8 @@ class ProductResponse implements Responsable
         return view('front_end.components.product')
                     ->with('rooms', $rooms)
                     ->with('roomsFavorite', $roomsFavorite)
-                    ->with('checkId', $this->check);
+                    ->with('checkId', $this->check)
+                    ->with('namePage', $this->namePage);
     }
 
     public function fromLoad($page)

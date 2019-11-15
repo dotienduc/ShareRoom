@@ -6,6 +6,7 @@ Homeland &mdash; Colorlib Website Template
 @include('front_end.partial.search')
 <div class="site-section site-section-sm bg-light">
 <input type="hidden" id="checkIdUser" value=" "/>
+<input type="hidden" id="name-page" value="{{ Route::currentRouteName() }}"/>
       <div class="container">
         <div id="product-data">
 

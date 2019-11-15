@@ -14,7 +14,9 @@ use App\Favorite;
 class RoomController extends Controller
 {
     public function loadData(Request $request) {
-        return new ProductResponse($request->search, $request->page, $request->sort, $request->check);
+        return new ProductResponse($request->search, $request->page,
+                                     $request->sort, $request->check,
+                                     $request->namePage );
     }
 
     public function rent($id = 0) 
@@ -162,7 +164,7 @@ class RoomController extends Controller
     {
         $rooms = Favorite::where('user_id', Auth::user()->id)->get();
         if($rooms->count() > 0){
-            if($rooms->contains('id', $id)){
+            if(Favorite::where([['user_id', Auth::user()->id], ['room_id', $id]])->count() == 0){
                 $favorite = new Favorite;
                 $favorite->user_id = Auth::user()->id;
                 $favorite->room_id = $id;

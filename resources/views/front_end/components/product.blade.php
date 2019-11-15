@@ -14,20 +14,19 @@
         <img src="{{ asset('front_end/images/'.explode(',', $room->images)[0].'') }}"
          alt="Image" class="img-fluid" style="height:200px; width:100%;">
       </a>
-      <div class="p-4 property-body">
-      @if(!Auth::check())
-      @if(count($roomsFavorite) > 0)
-        @foreach($roomsFavorite as $k => $r)
-        @if($r->room_id != $room->id)
-        <a href="{{ route('saveRoom', ['id' => $room->id ]) }}" class="property-favorite add-favorite"><span class="icon-heart-o"></span></a>
-        @else
-        <a href="{{ route('saveRoom', ['id' => $room->id ]) }}" class="property-favorite active add-favorite"><span class="icon-heart-o"></span></a>
-        
+      <div class="p-4 property-body {{Route::currentRouteName()}}">
+      @if(Auth::check())
+        @if($namePage == 'home')
+          @if(count($roomsFavorite) > 0)
+              @if($roomsFavorite->contains('room_id', $room->id))
+              <a href="{{ route('saveRoom', ['id' => $room->id ]) }}" class="property-favorite active add-favorite"><span class="icon-heart-o"></span></a>
+              @else
+              <a href="{{ route('saveRoom', ['id' => $room->id ]) }}" class="property-favorite add-favorite"><span class="icon-heart-o"></span></a>
+              @endif
+          @else
+          <a href="{{ route('saveRoom', ['id' => $room->id ]) }}" class="property-favorite add-favorite"><span class="icon-heart-o"></span></a>
+          @endif
         @endif
-        @endforeach
-      @else
-      <a href="{{ route('saveRoom', ['id' => $room->id ]) }}" class="property-favorite add-favorite"><span class="icon-heart-o"></span></a>
-      @endif
       @endif
         <h2 class="property-title"><a href="{{ route('room-detail', ['id' => $room->id]) }}">{{ $room->title }}</a></h2>
         <span class="property-location d-block mb-3"><span class="property-icon icon-room"></span>{{ $room->address_detail }}</span>
