@@ -61,6 +61,7 @@ textarea.parsley-error {
             <div class="col-4 d-block">
             <select class="custom-select action" name="city" id="city" required>
             <option value="{{$city->id}}">{{ $city->city }}</option>
+            <input type="hidden" id="city_hidden" value="{{ $city->id }}"/>
           </select>
             </div><div class="col-4 d-block">
           <select class="custom-select action" name="district" id="district" required>
@@ -140,7 +141,7 @@ textarea.parsley-error {
             </div>
             <div class="form-group">
               <label>Ảnh tượng trưng :</label>
-              <input type="file" id="image" name="image">
+              <input type="file" id="select_image" name="image[]" multiple />
               <input type="hidden" name="imageHidden" value="{{ $room->images }}" />
             </div>
             </div>
@@ -206,7 +207,44 @@ textarea.parsley-error {
 @endsection
 @section('javascript')
 <script src="{{ asset('front_end/js/parsley.min.js') }}"></script>
-<script src="{{ asset('front_end/js/custom_script.js') }}"></script>
 <script src="{{ asset('js/sweetalert.min.js') }}"></script>
 <script src="{{ asset('front_end/js/load-data.js') }}"></script>
+<script>
+$(document).ready(function(){
+    var form_create_room = $("#form_create_room");
+    form_create_room.submit(function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: form_create_room.attr("action"),
+            method: "POST",
+            data: new FormData(this),
+            contentType: false,
+            processData: false,
+            dataType: "json"
+        })
+            .done(function(response) {
+                if (response.success) {
+                    swal({
+                        title: "Đăng thành công",
+                        text: "Thông tin đã lưu thành công",
+                        timer: 2000,
+                        showConfirmButton: false,
+                        type: "success"
+                    });
+                    $("#form_create_room")[0].reset();
+                    window.location.replace(response.url);
+                } else {
+                    swal("Oop!", response.error, "error");
+                }
+            })
+            .fail(function() {
+                swal(
+                    "Hmm!!",
+                    "Thông tin không phù hợp, xin bạn nhập lại",
+                    "error"
+                );
+            });
+    });
+})
+</script>
 @endsection

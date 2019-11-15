@@ -27,15 +27,17 @@ Route::post('/users/resgister', 'Auth\RegisterController@register')->name('resgi
 Route::post('/comment', 'CommentController@comment')->name('comment');
 Route::post('/load-comment', 'CommentController@loadComment')->name('loadComment');
 
-Route::get('/create-room', 'RoomController@create')->name('createRoom');
-Route::post('/create-room', 'RoomController@store')->name('storeRoom');
+Route::get('/hienthiRoom', 'RoomController@hienthiRoom')->name('hienthiRoom');
+Route::post('/createRoom', 'RoomController@storeRoom')->name('storeRoom');
 Route::get('/delete-room/{id}', 'RoomController@destroy')->name('destroyRoom');
 Route::get('/show-room/{id}', 'RoomController@show')->name('showRoom');
 Route::post('/update-room', 'RoomController@update')->name('updateRoom');
 
 Route::get('/favorite', 'RoomController@favorite')->name('favorite')->middleware('auth');;
 Route::get('/save-room/{id}', 'RoomController@save')->name('saveRoom')->middleware('auth');;
-Route::get('/delete-room-favorite/{id}', 'RoomController@delete')->name('deleteRoom')->middleware('auth');;
+Route::get('/delete-room-favorite/{id}', 'RoomController@delete')->name('deleteRoom')->middleware('auth');
+
+Route::post('/custom-image', 'ImageController@custom')->name('customeImage');
 
 Auth::routes(['login' => false]);
 

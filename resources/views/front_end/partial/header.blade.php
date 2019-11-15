@@ -23,16 +23,16 @@
                 <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
 
                 <ul class="site-menu js-clone-nav d-none d-lg-block">
-                  <li class="active">
+                  <li class="menu-element @if(Route::currentRouteName() == 'home') active  @endif">
                     <a href="{{ route('home') }}">Trang Chủ</a>
                   </li>
-                  <li><a href="{{ route('favorite') }}">Bài Viết Quan Tâm</a></li>
+                  <li class="menu-element @if(Route::currentRouteName() == 'favorite') active  @endif"" ><a href="{{ route('favorite') }}">Bài Viết Quan Tâm</a></li>
                   @if(Auth::check())
-                  <li><a href="{{ route('ownerRent', ['id' => Auth::user()['id']]) }}">Bài Viết Của {{ Auth::user()->name }}</a></li>
-                  <li><a href="{{ route('logoutPage') }}">Đăng Xuất</a></li>
+                  <li class="menu-element @if(Route::currentRouteName() == 'ownerRent') active  @endif""><a href="{{ route('ownerRent', ['id' => Auth::user()['id']]) }}">Bài Viết Của {{ Auth::user()->name }}</a></li>
+                  <li class="menu-element"><a href="{{ route('logoutPage') }}">Đăng Xuất</a></li>
                   @else
-                  <li><a href="{{ route('loginPage') }}">Đăng Nhập</a></li>
-                  <li><a href="{{ route('showSignup') }}">Đăng Kí</a></li>
+                  <li class="menu-element"><a href="{{ route('loginPage') }}">Đăng Nhập</a></li>
+                  <li class="menu-element"><a href="{{ route('showSignup') }}">Đăng Kí</a></li>
                   @endif
                 </ul>
               </nav>

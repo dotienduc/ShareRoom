@@ -11,11 +11,13 @@ class CategoryResponse implements Responsable
     private $action = "";
     private $query;
     private $result;
+    private $city_id;
 
-    public function __construct($result = "", $action = "", $query = ""){
+    public function __construct($result = "", $action = "", $query = "", $city_id = ""){
         $this->action = $action;
         $this->query = $query;
         $this->result = $result;
+        $this->city_id = $city_id;
     }
 
     public function toResponse($request) {
@@ -26,11 +28,13 @@ class CategoryResponse implements Responsable
             return view('front_end.components.city_option')
                 ->with('cities', $cities)
                 ->with('result', $this->result)
-                ->with('data', $this->loadCategory($action, $this->query));
+                ->with('data', $this->loadCategory($action, $this->query))
+                ->with('city_id', $this->city_id);
         }else{
             return view('front_end.components.city_option')
                     ->with('cities', $cities)
-                    ->with('result', $this->result);
+                    ->with('result', $this->result)
+                    ->with('city_id', $this->city_id);
         }
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Room;
 
 class HomeController extends Controller
 {
@@ -23,7 +24,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
-        return view('front_end.home');
+        return view('front_end.home')
+                ->with('totalPage', $this->countPage());
+    }
+
+    public function countPage()
+    {
+        $roomPerPage = 9;
+        $totalRoom = Room::get()->count();
+
+        $totalPage = (int) ceil($totalRoom/$roomPerPage);
+        return $totalPage;
     }
 }

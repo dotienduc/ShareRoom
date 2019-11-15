@@ -14,14 +14,16 @@ use App\Favorite;
 class RoomController extends Controller
 {
     public function loadData(Request $request) {
-        return new ProductResponse($request->search, $request->page);
+        return new ProductResponse($request->search, $request->page, $request->sort, $request->check);
     }
 
-    public function rent($id = 0) {
+    public function rent($id = 0) 
+    {
         if($id > 0){
             $rooms = User::find($id)->rooms;
             return view('front_end.rent')
-                    ->with('rooms', $rooms);
+                    ->with('rooms', $rooms)
+                    ->with('totalPage', $this->countPage());
         }else{
             return back();
         }
@@ -29,6 +31,8 @@ class RoomController extends Controller
 
     public function roomDetail($id) {
         $room = Room::findOrFail($id);
+
+        // dd(explode(",", $room->images));
         return view('front_end.room_detail')
                 ->with('room', $room)
                 ->with('categoryRoom', $room->category->category)
@@ -45,18 +49,18 @@ class RoomController extends Controller
         return $roomRelation;
     }
 
-    public function create()
+    public function hienthiRoom()
     {
         return view('front_end.pages.room_register')
                 ->with('categories', Category::get());
     }
 
-    public function store(Request $request)
+    public function storeRoom(Request $request)
     {
-        $image = $request->file('image');
-        $nameImage = rand() . '.'.$image->getClientOriginalName();
-        $image->move(public_path('front_end/images'), $nameImage);
-
+        $nameImage = "";
+        if($request->hasFile('image')){
+            $nameImage = $this->getImages($request->file('image'));
+        }
         $room = new Room;
         $room->category_id = $request->category;
         $room->city_id = $request->city;
@@ -83,13 +87,11 @@ class RoomController extends Controller
 
         if($room->id)
         {
-            $message = ['success' => true];
-            $response = response()->json($message, 200);
+            $message = ['success' => true, 'url' => 'http://localhost/ShareRoom/public/rent/'.Auth::user()->id ];
         }else{
             $message = ['error' => "Đã xảy ra lỗi!!"];
-            $response = response()->json($message, 200);
         }
-        return $response;
+        return $message;
     }
 
     public function show($id)
@@ -109,9 +111,7 @@ class RoomController extends Controller
         $nameImage ="";
         if($request->hasFile('image'))
         {
-            $image = $request->file('image');
-            $nameImage = rand() . '.'.$image->getClientOriginalName();
-            $image->move(public_path('front_end/images'), $nameImage);
+            $nameImage = $this->getImages($request->file('image'));
         }else{
             $nameImage = $request->imageHidden;
         }
@@ -142,7 +142,7 @@ class RoomController extends Controller
 
         if($room->id)
         {
-            $message = ['success' => true];
+            $message = ['success' => true, 'url' => 'http://localhost/ShareRoom/public/'];
             $response = response()->json($message, 200);
         }else{
             $message = ['error' => "Đã xảy ra lỗi!!"];
@@ -207,5 +207,25 @@ class RoomController extends Controller
         $room->delete();
 
         return back();
+    }
+
+    public function countPage()
+    {
+        $roomPerPage = 9;
+        $totalRoom = Room::get()->count();
+
+        $totalPage = (int) ceil($totalRoom/$roomPerPage);
+        return $totalPage;
+    }
+
+    public function getImages($images)
+    {
+        $nameImages = [];
+        foreach($images as $key => $image)
+        {
+            $nameImages[$key] = rand() . '.'.$image->getClientOriginalName();
+            $image->move(public_path('front_end/images'), $nameImages[$key]);
+        }
+        return implode(",", $nameImages);
     }
 }

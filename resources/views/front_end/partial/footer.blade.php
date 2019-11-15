@@ -17,18 +17,11 @@
               </div>
               <div class="col-md-6 col-lg-6">
                 <ul class="list-unstyled">
-                  <li><a href="#">Trang Chủ</a></li>
-                  <li><a href="#">Bài Viết Quan Tâm</a></li>
-                  <li><a href="#">Bài Viết Của Bạn</a></li>
-                  <li><a href="#">Properties</a></li>
-                </ul>
-              </div>
-              <div class="col-md-6 col-lg-6">
-                <ul class="list-unstyled">
-                  <li><a href="#">About Us</a></li>
-                  <li><a href="#">Privacy Policy</a></li>
-                  <li><a href="#">Contact Us</a></li>
-                  <li><a href="#">Terms</a></li>
+                  <li><a href="{{ route('home') }}">Trang Chủ</a></li>
+                  <li><a href="{{ route('favorite') }}">Bài Viết Quan Tâm</a></li>
+                  @if(Auth::check())
+                  <li class="menu-element @if(Route::currentRouteName() == 'ownerRent') active  @endif""><a href="{{ route('ownerRent', ['id' => Auth::user()['id']]) }}">Bài Viết Của {{ Auth::user()->name }}</a></li>
+                  @endif
                 </ul>
               </div>
             </div>

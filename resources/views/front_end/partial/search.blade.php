@@ -8,7 +8,7 @@
                 <div class="select-wrap">
                   <span class="icon icon-arrow_drop_down"></span>
                   <select name="list-types" id="city" class="form-control d-block rounded-0 action">
-                    <option value="">Chọn thành phố</option>
+                    <option value="city">Chọn thành phố</option>
                   </select>
                 </div>
               </div>
@@ -17,7 +17,7 @@
                 <div class="select-wrap">
                   <span class="icon icon-arrow_drop_down"></span>
                   <select name="offer-types" id="district" class="form-control d-block rounded-0 action">
-                    <option value="">Chọn quận</option>
+                    <option value="district">Chọn quận</option>
                   </select>
                 </div>
               </div>
@@ -26,7 +26,7 @@
                 <div class="select-wrap">
                   <span class="icon icon-arrow_drop_down"></span>
                   <select name="select-city" id="street" class="form-control d-block rounded-0">
-                  <option value="">Chọn đường</option>
+                  <option value="street">Chọn đường</option>
                   </select>
                 </div>
               </div>
@@ -41,29 +41,21 @@
             <div class="view-options bg-white py-3 px-3 d-md-flex align-items-center">
               <div class="mr-auto">
                 <a href="index.html" class="icon-view view-module active"><span class="icon-view_module"></span></a>
-                <a href="view-list.html" class="icon-view view-list"><span class="icon-view_list"></span></a>
-                
               </div>
               <div class="ml-auto d-flex align-items-center">
-                <div>
-                  <a href="#" class="view-list px-3 border-right active">All</a>
-                  <a href="#" class="view-list px-3 border-right">Rent</a>
-                  <a href="#" class="view-list px-3">Sale</a>
-                </div>
-
-
                 <div class="select-wrap">
                   <span class="icon icon-arrow_drop_down"></span>
-                  <select class="form-control form-control-sm d-block rounded-0">
-                    <option value="">Sort by</option>
-                    <option value="">Giá</option>
-                    <option value="">Diện Tích</option>
-					<option value="">Ngày Đăng</option>
+                  <select class="form-control form-control-sm d-block rounded-0 option">
+                    <option value="asc">Giá </option>
+                    <option value="asc">Tăng dần</option>
+                    <option value="desc">Giảm dần</option>
                   </select>
                 </div>
                 @if(Route::input('id'))
                 <div class="select-wrap">
+                  <a href="{{ route('hienthiRoom') }}">
                 <input type="button" value="Thêm Bài Viết" style="background: green; color: white;"/>
+</a>
                 </div>
                 @endif
               </div>

@@ -115,40 +115,4 @@ $(document).ready(function() {
                 );
             });
     });
-
-    var form_create_room = $("#form_create_room");
-    form_create_room.submit(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: form_create_room.attr("action"),
-            method: "POST",
-            data: new FormData(this),
-            contentType: false,
-            processData: false,
-            dataType: "json"
-        })
-            .done(function(response) {
-                if (response.success) {
-                    loadComment();
-                    swal({
-                        title: "Đăng thành công",
-                        text: "Thông tin đã lưu thành công",
-                        timer: 2000,
-                        showConfirmButton: false,
-                        type: "success"
-                    });
-                    $("#form_create_room")[0].reset();
-                    setTimeout(function(){  window.history.go(-1); }, 2000);
-                } else {
-                    swal("Oop!", response.error, "error");
-                }
-            })
-            .fail(function() {
-                swal(
-                    "Hmm!!",
-                    "Thông tin không phù hợp, xin bạn nhập lại",
-                    "error"
-                );
-            });
-    });
 });

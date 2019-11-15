@@ -5,6 +5,7 @@ Homeland &mdash; Colorlib Website Template
 @section('content')
 @include('front_end.partial.search')
 <div class="site-section site-section-sm bg-light">
+<input type="hidden" id="checkIdUser" value=" "/>
       <div class="container">
         <div id="product-data">
 
@@ -14,13 +15,9 @@ Homeland &mdash; Colorlib Website Template
         <div class="row">
           <div class="col-md-12 text-center">
             <div class="site-pagination">
-              <a href="#" class="active">1</a>
-              <a href="#">2</a>
-              <a href="#">3</a>
-              <a href="#">4</a>
-              <a href="#">5</a>
-              <span>...</span>
-              <a href="#">10</a>
+              @for($i=1; $i<=$totalPage;$i++)
+                <a href="#" class="page" id="{{ $i }}">{{ $i }}</a>
+              @endfor
             </div>
           </div>  
         </div>

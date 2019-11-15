@@ -9,9 +9,9 @@ Homeland &mdash; Colorlib Website Template
           <div class="col-lg-8">
             <div>
               <div class="slide-one-item home-slider owl-carousel">
-                <div><img src="{{ asset('front_end/images/hero_bg_1.jpg') }}" alt="Image" class="img-fluid"></div>
-                <div><img src="{{ asset('front_end/images/hero_bg_2.jpg') }}" alt="Image" class="img-fluid"></div>
-                <div><img src="{{ asset('front_end/images/hero_bg_3.jpg') }}" alt="Image" class="img-fluid"></div>
+                @foreach(explode(",", $room->images) as $key => $image)
+                <div><img src="{{ asset('front_end/images/'.$image.'') }}" style="width:731px; height:488px;" alt="Image" class="img-fluid"></div>
+                @endforeach
               </div>
             </div>
             <div class="bg-white property-body border-bottom border-left border-right">
@@ -87,42 +87,11 @@ Homeland &mdash; Colorlib Website Template
                 <div class="col-12">
                   <h2 class="h4 text-black mb-3">Ảnh</h2>
                 </div>
+                @foreach(explode(",", $room->images) as $key => $image)
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_1.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_1.jpg') }}" alt="Image" class="img-fluid"></a>
+                  <a href="{{ asset('front_end/images/'.$image.'') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/'.$image.'') }}" alt="Image" class="img-fluid"></a>
                 </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_2.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_2.jpg') }}" alt="Image" class="img-fluid"></a>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_3.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_3.jpg') }}" alt="Image" class="img-fluid"></a>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_4.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_4.jpg') }}" alt="Image" class="img-fluid"></a>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_5.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_5.jpg') }}" alt="Image" class="img-fluid"></a>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_6.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_6.jpg') }}" alt="Image" class="img-fluid"></a>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_7.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_7.jpg') }}" alt="Image" class="img-fluid"></a>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_8.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_8.jpg') }}" alt="Image" class="img-fluid"></a>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_1.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_1.jpg') }}" alt="Image" class="img-fluid"></a>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_2.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_2.jpg') }}" alt="Image" class="img-fluid"></a>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_3.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_3.jpg') }}" alt="Image" class="img-fluid"></a>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                  <a href="{{ asset('front_end/images/img_4.jpg') }}" class="image-popup gal-item"><img src="{{ asset('front_end/images/img_4.jpg') }}" alt="Image" class="img-fluid"></a>
-                </div>
+                @endforeach
               </div>
             </div>
           </div>
@@ -137,7 +106,7 @@ Homeland &mdash; Colorlib Website Template
                 <input type="hidden" id="room" value="{{ $room->id }}"/>
               <form method="POST" id="comment_form" action="{{ route('comment') }}" data-parsley-validate>
                 <div class="form-group">
-                <input type="text" name="comment_name" id="comment_name" class="form-control" placeholder="Enter Name" required/>
+                <input type="text" name="comment_name" id="comment_name" class="form-control" value="@if(Auth::check()) {{ Auth::user()->name }} @endif" placeholder="Enter Name" required/>
                 </div>
                 <div class="form-group">
                 <textarea name="comment_content" id="comment_content" class="form-control" placeholder="Enter Comment" rows="3" required></textarea>
@@ -177,59 +146,74 @@ Homeland &mdash; Colorlib Website Template
         <div class="row mb-5">
           @foreach($roomRelation as $key => $room)
           <div class="col-md-6 col-lg-4 mb-4">
-            <div class="property-entry h-100">
-              <a href="{{ route('room-detail', ['id' => $room->id]) }}" class="property-thumbnail">
-                <img src="{{ asset('front_end/images/img_2.jpg') }}" alt="Image" class="img-fluid">
-              </a>
-              <div class="p-4 property-body">
-                <a href="#" class="property-favorite active"><span class="icon-heart-o"></span></a>
-                <h2 class="property-title"><a href="{{ route('room-detail', ['id' => $room->id]) }}">{{ $room->title }}</a></h2>
-                <span class="property-location d-block mb-3"><span class="property-icon icon-room"></span>{{ $room->address_detail }}</span>
-                <strong class="property-price text-primary mb-3 d-block text-success">{{ number_format($room->price_per_month) }} VND</strong>
-                <ul class="property-specs-wrap mb-3 mb-lg-0">
-                  <li>
-                    <span class="property-specs">Giường</span>
-                    <span class="property-specs-number">{{ $room->bed }}<sup>+</sup></span>
-                    
-                  </li>
-                  <li>
-                    <span class="property-specs">Phòng tắm</span>
-                    <span class="property-specs-number">{{ $room->bathroom }}</span>
-                    
-                  </li>
-                  <li>
-                    <span class="property-specs">Diện tích</span>
-                    <span class="property-specs-number">{{ $room->acreage }}</span>  
-                  </li>
-				  <span>
-                    <span class="property-specs">Tầng</span>
-                    <span class="property-specs-number">{{ $room->floor }}</span>  
-                  </li>
-				  <li>
-                    <span class="property-specs">Số người</span>
-                    <span class="property-specs-number">{{ $room->amount }}</span>  
-                  </li>
-				  <li>
-                    <span class="property-specs">Chỗ để xe</span>
-                    @if($room->parking)
-                    <span class="property-specs-number">Có</span> 
-                    @else
-                    <span class="property-specs-number">Không</span> 
-                    @endif 
-                  </li>
-				  <li>
-                    <span class="property-specs">Chung chủ</span>
-                    @if($room->joint_owner)
-                    <span class="property-specs-number">Có</span>  
-                    @else
-                    <span class="property-specs-number">Không</span>  
-                    @endif
-                  </li>
-                </ul>
+    <div class="property-entry h-100" @if(Auth::check()) style="position:relative;" @endif>
+      <input type="hidden" id="user_id" value="@if(Auth::check()) {{ Auth::user()->id }} @endif"/>
+      <a href="{{ route('room-detail', ['id' => $room->id]) }}" class="property-thumbnail">
+        <img src="{{ asset('front_end/images/'.explode(',', $room->images)[0].'') }}"
+         alt="Image" class="img-fluid" style="height:200px; width:100%;">
+      </a>
+      <div class="p-4 property-body">
+      @if(!Auth::check())
+      @if(count($roomsFavorite) > 0)
+        @foreach($roomsFavorite as $k => $r)
+        @if($r->room_id != $room->id)
+        <a href="{{ route('saveRoom', ['id' => $room->id ]) }}" class="property-favorite add-favorite"><span class="icon-heart-o"></span></a>
+        @else
+        <a href="{{ route('saveRoom', ['id' => $room->id ]) }}" class="property-favorite active add-favorite"><span class="icon-heart-o"></span></a>
+        
+        @endif
+        @endforeach
+      @else
+      <a href="{{ route('saveRoom', ['id' => $room->id ]) }}" class="property-favorite add-favorite"><span class="icon-heart-o"></span></a>
+      @endif
+      @endif
+        <h2 class="property-title"><a href="{{ route('room-detail', ['id' => $room->id]) }}">{{ $room->title }}</a></h2>
+        <span class="property-location d-block mb-3"><span class="property-icon icon-room"></span>{{ $room->address_detail }}</span>
+        <strong class="property-price text-primary mb-3 d-block text-success">{{ number_format($room->price_per_month) }} VND/Tháng</strong>
+        <ul class="property-specs-wrap mb-3 mb-lg-0">
+          <li>
+            <span class="property-specs">Giường</span>
+            <span class="property-specs-number">{{ $room->bed }} <sup>+</sup></span>
+            
+          </li>
+          <li>
+            <span class="property-specs">Phòng tắm</span>
+            <span class="property-specs-number">{{ $room->bathroom }}</span>
+            
+          </li>
+          <li>
+            <span class="property-specs">Diện tích</span>
+            <span class="property-specs-number">{{ $room->acreage }}</span>  
+          </li>
+  <li>
+            <span class="property-specs">Tầng</span>
+            <span class="property-specs-number">{{ $room->floor }}</span>  
+          </li>
+  <li>
+            <span class="property-specs">Số người</span>
+            <span class="property-specs-number">{{ $room->amount }}</span>  
+          </li>
+  <li>
+            <span class="property-specs">Chỗ để xe</span>
+            @if($room->parking)
+            <span class="property-specs-number">Có</span> 
+            @else
+            <span class="property-specs-number">Không</span> 
+            @endif
+          </li>
+  <li>
+            <span class="property-specs">Chung chủ</span>
+            @if($room->joint_owner)
+            <span class="property-specs-number">Có</span>  
+            @else
+            <span class="property-specs-number">Không</span> 
+            @endif
+          </li>
+        </ul>
 
-              </div>
-            </div>
-          </div>
+      </div>
+    </div>
+</div>       
           @endforeach
         </div>
       </div>
