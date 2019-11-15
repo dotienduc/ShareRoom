@@ -24,12 +24,14 @@ class CategoryResponse implements Responsable
         $action = $this->action;
         $cities = City::get();
         if($action != "") {
-            $this->loadCategory($action, $this->query);
-            return view('front_end.components.city_option')
-                ->with('cities', $cities)
-                ->with('result', $this->result)
-                ->with('data', $this->loadCategory($action, $this->query))
-                ->with('city_id', $this->city_id);
+            if(!$this->loadCategory($action, $this->query)){
+            }else{
+                return view('front_end.components.city_option')
+                    ->with('cities', $cities)
+                    ->with('result', $this->result)
+                    ->with('data', $this->loadCategory($action, $this->query))
+                    ->with('city_id', $this->city_id);
+            }
         }else{
             return view('front_end.components.city_option')
                     ->with('cities', $cities)
@@ -43,6 +45,8 @@ class CategoryResponse implements Responsable
             return District::where('city_id', $query)->get();
         }else if($action == 'district') {
             return Street::where('district_id', $query)->get();
+        }else{
+            return false;
         }
     }
 }

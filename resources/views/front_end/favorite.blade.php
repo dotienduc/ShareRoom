@@ -13,7 +13,7 @@ Homeland &mdash; Colorlib Website Template
  @foreach($roomsFavorite as $key => $room) 
 <div class="col-md-6 col-lg-4 mb-4">
     <div class="property-entry h-100">
-      <input type="hidden" id="user_id" value="@if(Auth::check()) {{ Auth::user()->id }} @endif"
+      <input type="hidden" id="user_id" value="@if(Auth::check()) {{ Auth::user()->id }} @endif"/>
       <a href="{{ route('room-detail', ['id' => $room->id]) }}" class="property-thumbnail">
         <img src="{{ asset('front_end/images/'.explode(',', $room->images)[0].'') }}" style="height:200px; width:100%;" alt="Image" class="img-fluid">
       </a>

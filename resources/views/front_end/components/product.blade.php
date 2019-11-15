@@ -12,7 +12,7 @@
       <input type="hidden" id="user_id" value="@if(Auth::check()) {{ Auth::user()->id }} @endif"/>
       <a href="{{ route('room-detail', ['id' => $room->id]) }}" class="property-thumbnail">
         <img src="{{ asset('front_end/images/'.explode(',', $room->images)[0].'') }}"
-         alt="Image" class="img-fluid" style="height:200px; width:100%;">
+         alt="Image" class="img-fluid" style="height:200px; width:2000px;">
       </a>
       <div class="p-4 property-body {{Route::currentRouteName()}}">
       @if(Auth::check())

@@ -25,7 +25,7 @@
                 <label for="select-city">Đường</label>
                 <div class="select-wrap">
                   <span class="icon icon-arrow_drop_down"></span>
-                  <select name="select-city" id="street" class="form-control d-block rounded-0">
+                  <select name="select-city" id="street" class="form-control d-block rounded-0 action">
                   <option value="street">Chọn đường</option>
                   </select>
                 </div>

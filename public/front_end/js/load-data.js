@@ -50,8 +50,12 @@ $(document).ready(function() {
                 url: url,
                 data: { action: action, value: value, result: result },
                 success: function(data) {
-                    loadData({ type: action, id: value });
-                    $("#" + result).html(data);
+                    if(action != "street"){
+                        loadData({ type: action, id: value });
+                        $("#" + result).html(data);
+                    }else{
+                        loadData({ type: action, id: value });
+                    }
                 }
             });
         }
